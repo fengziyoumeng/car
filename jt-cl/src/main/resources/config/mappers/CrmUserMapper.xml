@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- crm_user表:用户信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.core.mapper.CrmUserMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.core.domain.CrmUser">
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="login_mobile" property="loginMobile" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="last_login_location" property="lastLoginLocation" jdbcType="VARCHAR" />
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+        <result column="recommend_code" property="recommendCode" jdbcType="VARCHAR" />
+        <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+        <result column="recommend_num" property="recommendNum" jdbcType="INTEGER" />
+        <result column="add_time" property="addTime" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+        <result column="user_state" property="userState" jdbcType="INTEGER" />
+        <result column="anti_fraud_auth" property="antiFraudAuth" jdbcType="INTEGER" />
+        <result column="blacklist_auth" property="blacklistAuth" jdbcType="INTEGER" />
+        <result column="operator_auth" property="operatorAuth" jdbcType="INTEGER" />
+        <result column="alipay_auth" property="alipayAuth" jdbcType="INTEGER" />
+        <result column="carrier_id" property="carrierId" jdbcType="VARCHAR" />
+        <result column="alipay_id" property="alipayId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        user_id,user_name,login_mobile,password,last_login_location,last_login_time,recommend_code,channel_code,recommend_num,add_time,update_time,user_state,anti_fraud_auth,blacklist_auth,operator_auth,alipay_auth,carrier_id,alipay_id 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userId != null and userId != '' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="loginMobile != null and loginMobile != '' ">
+                and login_mobile = #{loginMobile,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != '' ">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="lastLoginLocation != null and lastLoginLocation != '' ">
+                and last_login_location = #{lastLoginLocation,jdbcType=VARCHAR}
+            </if>
+            <if test="lastLoginTime != null">
+                and last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="recommendCode != null and recommendCode != '' ">
+                and recommend_code = #{recommendCode,jdbcType=VARCHAR}
+            </if>
+            <if test="channelCode != null and channelCode != '' ">
+                and channel_code = #{channelCode,jdbcType=VARCHAR}
+            </if>
+            <if test="recommendNum != null and recommendNum != '' ">
+                and recommend_num = #{recommendNum,jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != '' ">
+                and add_time = #{addTime,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != '' ">
+                and update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="userState != null and userState != '' ">
+                and user_state = #{userState,jdbcType=INTEGER}
+            </if>
+            <if test="antiFraudAuth != null and antiFraudAuth != '' ">
+                and anti_fraud_auth = #{antiFraudAuth,jdbcType=INTEGER}
+            </if>
+            <if test="blacklistAuth != null and blacklistAuth != '' ">
+                and blacklist_auth = #{blacklistAuth,jdbcType=INTEGER}
+            </if>
+            <if test="operatorAuth != null and operatorAuth != '' ">
+                and operator_auth = #{operatorAuth,jdbcType=INTEGER}
+            </if>
+            <if test="alipayAuth != null and alipayAuth != '' ">
+                and alipay_auth = #{alipayAuth,jdbcType=INTEGER}
+            </if>
+            <if test="carrierId != null and carrierId != '' ">
+                and carrier_id = #{carrierId,jdbcType=VARCHAR}
+            </if>
+            <if test="alipayId != null and alipayId != '' ">
+                and alipay_id = #{alipayId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.core.domain.CrmUser">
+        insert into crm_user(user_id,user_name,login_mobile,password,last_login_location,last_login_time,recommend_code,channel_code,recommend_num,add_time,update_time,user_state,anti_fraud_auth,blacklist_auth,operator_auth,alipay_auth,carrier_id,alipay_id)values(#{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR},#{loginMobile,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{lastLoginLocation,jdbcType=VARCHAR},#{lastLoginTime,jdbcType=TIMESTAMP},#{recommendCode,jdbcType=VARCHAR},#{channelCode,jdbcType=VARCHAR},#{recommendNum,jdbcType=INTEGER},#{addTime,jdbcType=VARCHAR},#{updateTime,jdbcType=VARCHAR},#{userState,jdbcType=INTEGER},#{antiFraudAuth,jdbcType=INTEGER},#{blacklistAuth,jdbcType=INTEGER},#{operatorAuth,jdbcType=INTEGER},#{alipayAuth,jdbcType=INTEGER},#{carrierId,jdbcType=VARCHAR},#{alipayId,jdbcType=VARCHAR})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.core.domain.CrmUser">
+        update crm_user set
+            user_name = #{userName,jdbcType=VARCHAR},
+            login_mobile = #{loginMobile,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            last_login_location = #{lastLoginLocation,jdbcType=VARCHAR},
+            last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            recommend_code = #{recommendCode,jdbcType=VARCHAR},
+            channel_code = #{channelCode,jdbcType=VARCHAR},
+            recommend_num = #{recommendNum,jdbcType=INTEGER},
+            add_time = #{addTime,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=VARCHAR},
+            user_state = #{userState,jdbcType=INTEGER},
+            anti_fraud_auth = #{antiFraudAuth,jdbcType=INTEGER},
+            blacklist_auth = #{blacklistAuth,jdbcType=INTEGER},
+            operator_auth = #{operatorAuth,jdbcType=INTEGER},
+            alipay_auth = #{alipayAuth,jdbcType=INTEGER},
+            carrier_id = #{carrierId,jdbcType=VARCHAR},
+            alipay_id = #{alipayId,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update crm_user
+          <set>
+            <if test="userName != null and userName != '' ">        
+                user_name = #{userName,jdbcType=VARCHAR},                
+            </if>
+            <if test="loginMobile != null and loginMobile != '' ">        
+                login_mobile = #{loginMobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="password != null and password != '' ">        
+                password = #{password,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastLoginLocation != null and lastLoginLocation != '' ">        
+                last_login_location = #{lastLoginLocation,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="recommendCode != null and recommendCode != '' ">        
+                recommend_code = #{recommendCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="channelCode != null and channelCode != '' ">        
+                channel_code = #{channelCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="recommendNum != null and recommendNum != '' ">        
+                recommend_num = #{recommendNum,jdbcType=INTEGER},                
+            </if>
+            <if test="addTime != null and addTime != '' ">        
+                add_time = #{addTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="updateTime != null and updateTime != '' ">        
+                update_time = #{updateTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="userState != null and userState != '' ">        
+                user_state = #{userState,jdbcType=INTEGER},                
+            </if>
+            <if test="antiFraudAuth != null and antiFraudAuth != '' ">        
+                anti_fraud_auth = #{antiFraudAuth,jdbcType=INTEGER},                
+            </if>
+            <if test="blacklistAuth != null and blacklistAuth != '' ">        
+                blacklist_auth = #{blacklistAuth,jdbcType=INTEGER},                
+            </if>
+            <if test="operatorAuth != null and operatorAuth != '' ">        
+                operator_auth = #{operatorAuth,jdbcType=INTEGER},                
+            </if>
+            <if test="alipayAuth != null and alipayAuth != '' ">        
+                alipay_auth = #{alipayAuth,jdbcType=INTEGER},                
+            </if>
+            <if test="carrierId != null and carrierId != '' ">        
+                carrier_id = #{carrierId,jdbcType=VARCHAR},                
+            </if>
+            <if test="alipayId != null and alipayId != '' ">        
+                alipay_id = #{alipayId,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from crm_user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from crm_user
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from crm_user
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

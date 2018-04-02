@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sj_query_condition表:用户消息模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.QueryConditionMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.QueryCondition">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+        <result column="zm_score_level" property="zmScoreLevel" jdbcType="INTEGER" />
+        <result column="age_min" property="ageMin" jdbcType="INTEGER" />
+        <result column="age_max" property="ageMax" jdbcType="INTEGER" />
+        <result column="address_filter" property="addressFilter" jdbcType="VARCHAR" />
+        <result column="data_amount" property="dataAmount" jdbcType="INTEGER" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <resultMap id="QueryResultMap" type="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,merchant_id,zm_score_level,age_min,age_max,data_amount,update_time,address_filter
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != '' ">
+                and merchant_id = #{merchantId,jdbcType=BIGINT}
+            </if>
+            <if test="zmScoreLevel != null and zmScoreLevel != '' ">
+                and zm_score_level = #{zmScoreLevel,jdbcType=INTEGER}
+            </if>
+            <if test="ageMin != null and ageMin != '' ">
+                and age_min = #{ageMin,jdbcType=INTEGER}
+            </if>
+            <if test="ageMax != null and ageMax != '' ">
+                and age_max = #{ageMax,jdbcType=INTEGER}
+            </if>
+            <if test="dataAmount != null and dataAmount != '' ">
+                and data_amount = #{dataAmount,jdbcType=INTEGER}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.QueryCondition">
+        insert into sj_query_condition(merchant_id,zm_score_level,age_min,age_max,data_amount,update_time,address_filter)values(#{merchantId,jdbcType=BIGINT},#{zmScoreLevel,jdbcType=INTEGER},#{ageMin,jdbcType=INTEGER},#{ageMax,jdbcType=INTEGER},#{dataAmount,jdbcType=INTEGER},#{updateTime,jdbcType=TIMESTAMP},#{addressFilter,jdbcType=VARCHAR})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.QueryCondition">
+        update sj_query_condition set 
+            merchant_id = #{merchantId,jdbcType=BIGINT},
+            zm_score_level = #{zmScoreLevel,jdbcType=INTEGER},
+            age_min = #{ageMin,jdbcType=INTEGER},
+            age_max = #{ageMax,jdbcType=INTEGER},
+            data_amount = #{dataAmount,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update sj_query_condition
+          <set>
+            <if test="merchantId != null and merchantId != '' ">        
+                merchant_id = #{merchantId,jdbcType=BIGINT},                
+            </if>
+            <if test="zmScoreLevel != null and zmScoreLevel != '' ">
+                zm_score_level = #{zmScoreLevel,jdbcType=INTEGER},
+            </if>
+
+            <if test="ageMin != null and ageMin != '' ">        
+                age_min = #{ageMin,jdbcType=INTEGER},                
+            </if>
+            <if test="ageMax != null and ageMax != '' ">        
+                age_max = #{ageMax,jdbcType=INTEGER},                
+            </if>
+            <if test="dataAmount != null and dataAmount != '' ">        
+                data_amount = #{dataAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateMySelective" >
+        update sj_query_condition
+          <set>
+            <if test="merchantId != null and merchantId != '' ">
+                merchant_id = #{merchantId,jdbcType=BIGINT},
+            </if>
+            <if test="zmScoreLevel != null and zmScoreLevel != '' ">
+                zm_score_level = #{zmScoreLevel,jdbcType=INTEGER},
+            </if>
+            <if test="ageMin != null and ageMin != '' ">
+                age_min = #{ageMin,jdbcType=INTEGER},
+            </if>
+            <if test="ageMax != null and ageMax != '' ">
+                age_max = #{ageMax,jdbcType=INTEGER},
+            </if>
+            <if test="addressFilter != null and addressFilter != '' ">
+                address_filter = #{addressFilter,jdbcType=VARCHAR},
+            </if>
+            <if test="dataAmount != null and dataAmount != '' ">
+                data_amount = #{dataAmount,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getConditionById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        where merchant_id = #{merchantId}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_query_condition
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="queryUserByCondition" resultMap="QueryResultMap" parameterType="java.util.HashMap">
+        select
+          cu.user_id AS borrower_id
+        from crm_user cu
+        LEFT JOIN crm_user_base cub on cu.user_id = cub.user_id
+        <where>
+            cu.recommend_num &lt; 4
+            <if test="ageMin!=null and ageMin!=''">
+                AND cub.age &gt;= #{ageMin}
+            </if>
+            <if test="ageMax!=null and ageMax!=''">
+                AND cub.age &lt;= #{ageMax}
+            </if>
+            <!--<if test="zmScoreLevel==1 and zmScoreLevel != null">
+                AND cub.zhima_score &gt;= 450
+                AND cub.zhima_score &lt; 550
+            </if>
+            <if test="zmScoreLevel==2 and zmScoreLevel != null">
+                AND cub.zhima_score &gt;= 550
+                AND cub.zhima_score &lt; 630
+            </if>
+            <if test="zmScoreLevel==3 and zmScoreLevel != null">
+                AND cub.zhima_score &gt;= 630
+            </if>-->
+            <if test="addrFilter!=null">
+                AND cub.province NOT IN
+                <foreach collection="addrFilterVo" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        ORDER BY cu.recommend_num
+    </select>
+
+</mapper>

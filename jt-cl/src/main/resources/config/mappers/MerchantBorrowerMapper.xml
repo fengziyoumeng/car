@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sj_merchant_borrower表:用户消息模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MerchantBorrowerMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+        <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
+        <result column="audit" property="audit" jdbcType="INTEGER" />
+        <result column="is_buy_detail" property="isBuyDetail" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="userDataResultMap" type="com.rongdu.cashloan.cl.domain.UserData">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrower_id" property="borrowerId" jdbcType="BIGINT" />
+        <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+        <result column="card_type" property="cardType" jdbcType="INTEGER" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="qq" property="qq" jdbcType="VARCHAR" />
+        <result column="weixin" property="weixin" jdbcType="VARCHAR" />
+        <result column="auth_status" property="authStatus" jdbcType="INTEGER" />
+        <result column="zhima_status" property="zhimaStatus" jdbcType="INTEGER" />
+        <result column="jingdong_status" property="jingdongStatus" jdbcType="INTEGER" />
+        <result column="operator_status" property="operatorStatus" jdbcType="INTEGER" />
+        <result column="is_auth_pay" property="isAuthPay" jdbcType="VARCHAR" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="auth_mobile" property="authMobile" jdbcType="VARCHAR" />
+        <result column="mobile_operator" property="mobileOperator" jdbcType="INTEGER" />
+        <result column="zhima_score" property="zhimaScore" jdbcType="INTEGER" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="is_buy_detail" property="isBuyDetail" jdbcType="INTEGER" />
+        <result column="audit" property="audit" jdbcType="INTEGER" />
+    </resultMap>
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        merchant_id,borrower_id,auth,is_buy_detail,add_time
+    </sql>
+
+    <sql id="User_Data_List">
+        id,user_id,card_id,real_name,sex,age,qq,weixin
+    </sql>
+
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="merchantId != null and merchantId != '' ">
+                and merchant_id = #{merchantId,jdbcType=BIGINT}
+            </if>
+            <if test="borrowerId != null and borrowerId != '' ">
+                and borrower_id = #{borrowerId,jdbcType=BIGINT}
+            </if>
+            <if test="auth != null and auth != '' ">
+                and auth = #{auth,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        insert into sj_merchant_borrower(merchant_id,borrower_id,audit,is_buy_detail,add_time,price)values(#{merchantId,jdbcType=BIGINT},#{borrowerId,jdbcType=BIGINT},#{audit,jdbcType=INTEGER},#{isBuyDetail,jdbcType=INTEGER},#{addTime,jdbcType=TIMESTAMP},#{price,jdbcType=DECIMAL})
+    </insert>
+
+    <insert id="batchInsert" parameterType="list">
+        insert into sj_merchant_borrower(merchant_id,borrower_id,audit,is_buy_detail,add_time,price)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+          (#{item.merchantId,jdbcType=BIGINT},#{item.borrowerId,jdbcType=BIGINT},#{item.audit,jdbcType=INTEGER},#{item.isBuyDetail,jdbcType=INTEGER},#{item.addTime,jdbcType=TIMESTAMP},#{item.price,jdbcType=DECIMAL})
+        </foreach>
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MerchantBorrower">
+        update sj_merchant_borrower set 
+            merchant_id = #{merchantId,jdbcType=BIGINT},
+            borrower_id = #{borrowerId,jdbcType=BIGINT},
+            auth = #{auth,jdbcType=INTEGER},
+            is_buy_detail = #{isBuyDetail,jdbcType=INTEGER},
+            add_time = #{addTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+    <update id="setAuditStatus" parameterType="java.util.HashMap">
+        update sj_merchant_borrower set
+            audit = #{audit,jdbcType=INTEGER}
+        where
+            merchant_id = #{merchantId} and borrower_id = #{borrowerId} and audit = 0
+
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update sj_merchant_borrower
+          <set>
+            <if test="merchantId != null and merchantId != '' ">        
+                merchant_id = #{merchantId,jdbcType=BIGINT},                
+            </if>
+            <if test="borrowerId != null and borrowerId != '' ">        
+                borrower_id = #{borrowerId,jdbcType=BIGINT},                
+            </if>
+            <if test="auth != null and auth != '' ">        
+                auth = #{auth,jdbcType=INTEGER},                
+            </if>
+            <if test="isBuyDetail != null and isBuyDetail != '' ">
+                is_buy_detail = #{isBuyDetail,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null and addTime != '' ">
+                add_time = #{addTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from sj_merchant_borrower
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_merchant_borrower
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sj_merchant_borrower
+        <include refid="searchBy"/>
+    </select>
+    
+    <select id="getUserDataList" resultMap="userDataResultMap" parameterType="java.util.HashMap">
+        select
+            cub.user_id AS user_id,cub.card_id AS card_id,cub.auth_mobile AS auth_mobile,
+            cub.mobile_operator AS mobile_operator,cub.real_name AS real_name,cub.age AS age,cub.sex AS sex,
+            cub.address AS address,cub.qq AS qq,cub.weixin AS weixin,
+            cub.zhima_score AS zhima_score,
+            smb.price AS price,smb.is_buy_detail AS is_buy_detail,smb.audit AS audit,smb.add_time AS add_time,smb.id AS id
+        from crm_user_base cub
+        LEFT JOIN sj_merchant_borrower smb ON smb.borrower_id = cub.user_id
+        <where>
+            smb.merchant_id = #{merchantId,jdbcType=BIGINT}
+            <if test="audit != null and audit != '' ">
+                and smb.audit = #{audit}
+            </if>
+            <if test="start != null and start != '' ">
+                and date_format(smb.add_time, '%Y-%m-%d') &gt;= #{start,jdbcType=TIMESTAMP}
+            </if>
+            <if test="end != null and end != '' ">
+                and date_format(smb.add_time, '%Y-%m-%d') &lt;= #{end,jdbcType=TIMESTAMP}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                and cub.auth_mobile LIKE concat('%',#{mobile},'%')
+            </if>
+        </where>
+        ORDER BY smb.add_time DESC
+    </select>
+
+    <select id="countBorrowers" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        select COUNT(merchant_id)
+        from sj_merchant_borrower
+        where merchant_id = #{userId}
+    </select>
+
+    <select id="countBorrowersByGroup" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select COUNT(merchant_id) as merchant_count,merchant_id,price
+        from sj_merchant_borrower
+        where date_format(add_time, '%Y-%m-%d') = #{addTime}
+        group by merchant_id
+    </select>
+
+    <select id="queryUserById" resultMap="BaseResultMap">
+        select borrower_id
+        from sj_merchant_borrower
+        where merchant_id = #{userId}
+    </select>
+</mapper>
